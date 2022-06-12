@@ -5,7 +5,8 @@ type SearchAbleTodo = "title" | "completed" | "id";
 export const handleSearchSortFilter = (
     todoList: TodoType[],
     query: string,
-    filterParam: string
+    filterParam: string,
+    sortParam: string
 ) => {
     const searchParam: SearchAbleTodo[] = ["title"];
 
@@ -30,5 +31,20 @@ export const handleSearchSortFilter = (
         return item;
     });
 
-    return filteredByFilter;
+    const sortByParam = (todoList: TodoType[]): TodoType[] => {
+        const completed = todoList.filter((item) => item.completed);
+        const todo = todoList.filter((item) => !item.completed);
+
+        if (sortParam === "completed") {
+            return [...completed, ...todo];
+        } else if (sortParam === "todo") {
+            return [...todo, ...completed];
+        }
+
+        return todoList;
+    };
+
+    const filteredBySort = sortByParam(filteredByFilter);
+
+    return filteredBySort;
 };

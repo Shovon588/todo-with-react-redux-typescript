@@ -9,23 +9,36 @@ import TodoItem from "./TodoItem";
 const TodoList = () => {
     const [query, setQuery] = useState("");
     const [filterParam, setFilterParam] = useState("all");
+    const [sortParam, setSortParam] = useState("all");
     const [filteredTodo, setFilteredTodo] = useState([] as TodoType[]);
     const { todoList } = useAppSelector((state) => state.todo);
 
     useEffect(() => {
-        setFilteredTodo(handleSearchSortFilter(todoList, query, filterParam));
-    }, [query, todoList, filterParam]);
+        setFilteredTodo(
+            handleSearchSortFilter(todoList, query, filterParam, sortParam)
+        );
+    }, [query, todoList, filterParam, sortParam]);
 
     return (
-        <div className="list-section">
+        <>
             <SearchSortFilter
-                {...{ query, setQuery, filterParam, setFilterParam }}
+                {...{
+                    query,
+                    setQuery,
+                    filterParam,
+                    setFilterParam,
+                    sortParam,
+                    setSortParam,
+                }}
             />
-
-            {filteredTodo.map((todoObject: any) => {
-                return <TodoItem key={todoObject.id} todoObject={todoObject} />;
-            })}
-        </div>
+            <div className="list-section">
+                {filteredTodo.map((todoObject: any) => {
+                    return (
+                        <TodoItem key={todoObject.id} todoObject={todoObject} />
+                    );
+                })}
+            </div>
+        </>
     );
 };
 

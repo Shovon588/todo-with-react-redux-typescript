@@ -6,6 +6,8 @@ interface Props {
     setQuery: React.Dispatch<React.SetStateAction<string>>;
     filterParam: string;
     setFilterParam: React.Dispatch<React.SetStateAction<string>>;
+    sortParam: string;
+    setSortParam: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SearchSortFilter: React.FC<Props> = ({
@@ -13,6 +15,8 @@ const SearchSortFilter: React.FC<Props> = ({
     setQuery,
     filterParam,
     setFilterParam,
+    sortParam,
+    setSortParam,
 }) => {
     return (
         <div className="search-sort-filter">
@@ -25,6 +29,17 @@ const SearchSortFilter: React.FC<Props> = ({
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                 />
+            </div>
+
+            <div className="sort-div">
+                <select
+                    value={sortParam}
+                    onChange={(event) => setSortParam(event.target.value)}
+                >
+                    <option value="all">Sort by</option>
+                    <option value="completed">Completed</option>
+                    <option value="todo">Todo</option>
+                </select>
             </div>
 
             <div className="filter-div">
