@@ -38,6 +38,8 @@ export const fetchTodoList =
                         type: FETCH_TODO_SUCCESS,
                         payload: response.data,
                     });
+
+                    dispatch({ type: LOADING_END });
                 }
             }, 1500);
         } catch (err) {
@@ -47,9 +49,9 @@ export const fetchTodoList =
                 isLoading: false,
                 autoClose: 2000,
             });
-        }
 
-        dispatch({ type: LOADING_END });
+            dispatch({ type: LOADING_END });
+        }
     };
 
 export interface AddTodoPayload {
