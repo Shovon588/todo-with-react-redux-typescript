@@ -2,11 +2,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Dispatch } from "redux";
 import {
+    ADD_TODO_SUCCESS,
     FETCH_TODO_SUCCESS,
     LOADING_END,
     LOADING_START,
     ResponseCode,
-    TodoDispatchType
+    TodoDispatchType,
 } from "./todoActionTypes";
 
 const API_BASE_URL = "https://jsonplaceholder.typicode.com/todos";
@@ -20,7 +21,9 @@ export const fetchTodoList =
         try {
             // Intentional delay for nicer transition
             setTimeout(async () => {
-                const response = await axios.get(`${API_BASE_URL}?userId=${userId}`);
+                const response = await axios.get(
+                    `${API_BASE_URL}?userId=${userId}`
+                );
                 if (response && response.status === ResponseCode.OKAY) {
                     toast.update(id, {
                         render: "Data fetched successfully",
@@ -41,6 +44,30 @@ export const fetchTodoList =
                 isLoading: false,
                 autoClose: 2000,
             });
+        }
+
+        dispatch({ type: LOADING_END });
+    };
+
+export interface AddTodoPayload {
+    userId: number;
+    title: string;
+    completed: boolean;
+}
+
+export const addTodoList =
+    (payload: AddTodoPayload) =>
+    async (dispatch: Dispatch<TodoDispatchType>) => {
+        dispatch({ type: LOADING_START });
+
+        try {
+            const response = await axios.post(API_BASE_URL, payload);
+            if (response.status === ResponseCode.CREATED) {
+                toast.success("New item added");
+                dispatch({ type: ADD_TODO_SUCCESS, payload: response.data });
+            }
+        } catch (err) {
+            toast.error("Add new item failed. Try again.");
         }
 
         dispatch({ type: LOADING_END });
