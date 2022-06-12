@@ -4,6 +4,7 @@ import { Dispatch } from "redux";
 import {
     ADD_TODO_SUCCESS,
     FETCH_TODO_SUCCESS,
+    DELETE_TODO_SUCCESS,
     LOADING_END,
     LOADING_START,
     ResponseCode,
@@ -68,6 +69,23 @@ export const addTodoList =
             }
         } catch (err) {
             toast.error("Add new item failed. Try again.");
+        }
+
+        dispatch({ type: LOADING_END });
+    };
+
+
+    export const deleteTodoList =
+    (id: number) => async (dispatch: Dispatch<TodoDispatchType>) => {
+        dispatch({ type: LOADING_START });
+
+        try {
+            const response = await axios.delete(`${API_BASE_URL}/${id}`);
+            if (response.status === ResponseCode.OKAY) {
+                dispatch({ type: DELETE_TODO_SUCCESS, id });
+            }
+        } catch (err) {
+            toast.error('Delete item failed. Try again.')
         }
 
         dispatch({ type: LOADING_END });
