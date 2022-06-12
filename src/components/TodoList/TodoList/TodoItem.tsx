@@ -2,8 +2,12 @@ import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BallTriangle } from "react-loader-spinner";
 import ReactTooltip from "react-tooltip";
-import { deleteTodoList } from "../../../redux/actions/todoActions";
-import { useAppDispatch } from "../../../redux/hooks";
+import {
+    deleteTodoList,
+    updateTodoList,
+} from "../../../redux/actions/todoActions";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { TodoType } from "../../../redux/reducers/todoReducer";
 
 interface TodoObjInterface {
     id: number;
@@ -21,10 +25,23 @@ const TodoItem: React.FC<Props> = ({ todoObject }) => {
     const { id, title, completed } = todoObject;
 
     const dispatch = useAppDispatch();
+    const { userId } = useAppSelector((state) => state.user);
 
     const handleDeleteTodo = async () => {
         setIsLoading(true);
         await dispatch(deleteTodoList(id));
+        setIsLoading(false);
+    };
+
+    const handleUpdateTodo = async () => {
+        const payload: TodoType = {
+            id,
+            title,
+            completed: !completed,
+            userId,
+        };
+        setIsLoading(true);
+        await dispatch(updateTodoList(payload));
         setIsLoading(false);
     };
 
@@ -56,6 +73,7 @@ const TodoItem: React.FC<Props> = ({ todoObject }) => {
                             className="checkbox"
                             defaultChecked={completed}
                             disabled={id > 200}
+                            onClick={handleUpdateTodo}
                         />
                     </span>
 

@@ -1,14 +1,16 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Dispatch } from "redux";
+import { TodoType } from "./../reducers/todoReducer";
 import {
     ADD_TODO_SUCCESS,
-    FETCH_TODO_SUCCESS,
     DELETE_TODO_SUCCESS,
+    FETCH_TODO_SUCCESS,
     LOADING_END,
     LOADING_START,
     ResponseCode,
     TodoDispatchType,
+    UPDATE_TODO_SUCCESS,
 } from "./todoActionTypes";
 
 const API_BASE_URL = "https://jsonplaceholder.typicode.com/todos";
@@ -74,8 +76,7 @@ export const addTodoList =
         dispatch({ type: LOADING_END });
     };
 
-
-    export const deleteTodoList =
+export const deleteTodoList =
     (id: number) => async (dispatch: Dispatch<TodoDispatchType>) => {
         dispatch({ type: LOADING_START });
 
@@ -85,7 +86,26 @@ export const addTodoList =
                 dispatch({ type: DELETE_TODO_SUCCESS, id });
             }
         } catch (err) {
-            toast.error('Delete item failed. Try again.')
+            toast.error("Delete item failed. Try again.");
+        }
+
+        dispatch({ type: LOADING_END });
+    };
+
+export const updateTodoList =
+    (payload: TodoType) => async (dispatch: Dispatch<TodoDispatchType>) => {
+        dispatch({ type: LOADING_START });
+
+        try {
+            const response = await axios.put(
+                `${API_BASE_URL}/${payload.id}`,
+                payload
+            );
+            if (response.status === ResponseCode.OKAY) {
+                dispatch({ type: UPDATE_TODO_SUCCESS, payload });
+            }
+        } catch (err) {
+            toast.error("Update item failed. Try again.");
         }
 
         dispatch({ type: LOADING_END });

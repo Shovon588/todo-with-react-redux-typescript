@@ -5,6 +5,7 @@ export const LOADING_END = "LOADING_END";
 export const FETCH_TODO_SUCCESS = "FETCH_TODO_SUCCESS";
 export const ADD_TODO_SUCCESS = "ADD_TODO_SUCCESS";
 export const DELETE_TODO_SUCCESS = "DELETE_TODO_SUCCESS";
+export const UPDATE_TODO_SUCCESS = "UPDATE_TODO_SUCCESS";
 
 interface LoadingStart {
     type: typeof LOADING_START;
@@ -29,12 +30,17 @@ interface DeleteTodoSuccess {
     id: number;
 }
 
+interface UpdateTodoSuccess extends Omit<AddTodoSuccess, "type"> {
+    type: typeof UPDATE_TODO_SUCCESS;
+}
+
 export type TodoDispatchType =
     | LoadingStart
     | LoadingEnd
     | FetchTodoSuccess
     | AddTodoSuccess
-    | DeleteTodoSuccess;
+    | DeleteTodoSuccess
+    | UpdateTodoSuccess;
 
 export enum ResponseCode {
     OKAY = 200,
