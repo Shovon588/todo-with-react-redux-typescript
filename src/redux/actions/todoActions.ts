@@ -63,8 +63,6 @@ export interface AddTodoPayload {
 export const addTodoList =
     (payload: AddTodoPayload) =>
     async (dispatch: Dispatch<TodoDispatchType>) => {
-        dispatch({ type: LOADING_START });
-
         try {
             const response = await axios.post(API_BASE_URL, payload);
             if (response.status === ResponseCode.CREATED) {
@@ -74,14 +72,10 @@ export const addTodoList =
         } catch (err) {
             toast.error("Add new item failed. Try again.");
         }
-
-        dispatch({ type: LOADING_END });
     };
 
 export const deleteTodoList =
     (id: number) => async (dispatch: Dispatch<TodoDispatchType>) => {
-        dispatch({ type: LOADING_START });
-
         try {
             const response = await axios.delete(`${API_BASE_URL}/${id}`);
             if (response.status === ResponseCode.OKAY) {
@@ -90,14 +84,10 @@ export const deleteTodoList =
         } catch (err) {
             toast.error("Delete item failed. Try again.");
         }
-
-        dispatch({ type: LOADING_END });
     };
 
 export const updateTodoList =
     (payload: TodoType) => async (dispatch: Dispatch<TodoDispatchType>) => {
-        dispatch({ type: LOADING_START });
-
         try {
             const response = await axios.put(
                 `${API_BASE_URL}/${payload.id}`,
@@ -109,6 +99,4 @@ export const updateTodoList =
         } catch (err) {
             toast.error("Update item failed. Try again.");
         }
-
-        dispatch({ type: LOADING_END });
     };

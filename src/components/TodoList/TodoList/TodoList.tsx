@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { useAppSelector } from "../../../redux/hooks";
-import { TodoType } from "../../../redux/reducers/todoReducer";
 import SearchSortFilter from "../SearchSortFilter/SearchSortFilter";
 import { handleSearchSortFilter } from "../SearchSortFilter/utils";
 import "./style.scss";
 import TodoItem from "./TodoItem";
 
 const TodoList = () => {
+    const { todoList, loading, lastModified } = useAppSelector(
+        (state) => state.todo
+    );
+
     const [query, setQuery] = useState("");
     const [filterParam, setFilterParam] = useState("all");
     const [sortParam, setSortParam] = useState("all");
-    const [filteredTodo, setFilteredTodo] = useState([] as TodoType[]);
-    const { todoList, loading } = useAppSelector((state) => state.todo);
+    const [filteredTodo, setFilteredTodo] = useState(todoList);
 
     useEffect(() => {
         setFilteredTodo(
             handleSearchSortFilter(todoList, query, filterParam, sortParam)
         );
-    }, [query, todoList, filterParam, sortParam]);
+    }, [query, lastModified, filterParam, sortParam, todoList]);
 
     return (
         <>
