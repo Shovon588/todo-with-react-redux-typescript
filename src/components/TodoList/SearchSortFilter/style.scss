@@ -1,0 +1,30 @@
+.search-sort-filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: -webkit-fill-available;
+    height: 50px;
+    background: white;
+    margin: 3rem auto;
+    padding: 0.3rem 1rem;
+    border-radius: 10px;
+
+    .search-div {
+        width: 45%;
+        display: flex;
+        align-items: center;
+
+        .search-input {
+            height: 35px;
+            width: 100%;
+            font-size: 15px;
+            margin-left: 0.3rem;
+            border: none;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-bottom: 0.5px solid gray;
+        }
+    }
+}
