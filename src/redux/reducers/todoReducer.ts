@@ -1,6 +1,7 @@
 import {
     LOADING_END,
     LOADING_START,
+    FETCH_TODO_SUCCESS,
     TodoDispatchType,
 } from "../actions/todoActionTypes";
 
@@ -30,6 +31,8 @@ const todoReducer = (
             return { ...state, loading: true };
         case LOADING_END:
             return { ...state, loading: false };
+        case FETCH_TODO_SUCCESS:
+            return { ...state, todoList: action.payload };
         default:
             return state;
     }
