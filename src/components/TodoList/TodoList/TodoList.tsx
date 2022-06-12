@@ -8,16 +8,19 @@ import TodoItem from "./TodoItem";
 
 const TodoList = () => {
     const [query, setQuery] = useState("");
+    const [filterParam, setFilterParam] = useState("all");
     const [filteredTodo, setFilteredTodo] = useState([] as TodoType[]);
     const { todoList } = useAppSelector((state) => state.todo);
 
     useEffect(() => {
-        setFilteredTodo(handleSearchSortFilter(todoList, query));
-    }, [query, todoList]);
+        setFilteredTodo(handleSearchSortFilter(todoList, query, filterParam));
+    }, [query, todoList, filterParam]);
 
     return (
         <div className="list-section">
-            <SearchSortFilter {...{ query, setQuery }} />
+            <SearchSortFilter
+                {...{ query, setQuery, filterParam, setFilterParam }}
+            />
 
             {filteredTodo.map((todoObject: any) => {
                 return <TodoItem key={todoObject.id} todoObject={todoObject} />;
